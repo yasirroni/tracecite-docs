@@ -7,7 +7,7 @@ This package has no separate documentation site.
 ## Installation and use
 
 ```bash
-uv pip install tracecite-docs
+uv pip install tracecite-docs                # After the first release.
 uv pip install 'tracecite-docs[docs,evidence]'
 tracecite-docs build docs
 tracecite-docs table normalise table.md
