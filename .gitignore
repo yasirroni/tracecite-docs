@@ -1,0 +1,23 @@
+# Python environments and caches
+.venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Packaging
+*.egg-info/
+/dist/
+/build/
+
+# OS generated files
+.DS_Store
+
+# Editor
+.vscode/
+
+# Temporary files
+.tmp/
+*.zip
