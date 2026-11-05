@@ -6,6 +6,8 @@ This package has no separate documentation site.
 
 ## Installation and use
 
+Requires TraceCite 0.0.3 or later.
+
 ```bash
 uv pip install tracecite-docs                # After the first release.
 uv pip install 'tracecite-docs[docs,evidence]'
@@ -39,12 +41,7 @@ uv run --no-sync pytest -q -rs
 ```
 
 The implementation and behavioural tests were extracted from TraceCite commit `a942f138ba8534536b7aaa8f4b2062d1ba84c27d`, preserving its MIT licence.
-The uv source pin selects that same core revision for development.
 `requirements.txt` is derived with `uv export --all-extras --no-emit-project --no-hashes --output-file requirements.txt`.
-
-**Release prerequisite:** the published core `tracecite==0.0.2` lacks the indexing APIs used by this source revision.
-Before publishing, select and verify a compatible core release, update both core requirements, remove the development source pin, regenerate the lock/export and repeat clean artefact installation tests.
-The current `>=0.0.2` requirement is provisional and is not a verified release compatibility claim.
 
 ```bash
 uv pip install --upgrade build
@@ -53,7 +50,7 @@ uv pip install --upgrade twine
 uvx twine check dist/*
 uv build --no-sources
 uvx twine check --strict dist/*
-# After the release prerequisite and upload configuration are satisfied:
+# After checking the artefacts and configuring the upload repository:
 uvx twine upload --repository tracecite-docs dist/*
 ```
 

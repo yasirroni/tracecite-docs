@@ -2381,12 +2381,16 @@ wheels = [
 
 [[package]]
 name = "tracecite"
-version = "0.0.2"
-source = { git = "https://github.com/yasirroni/tracecite.git?rev=a942f138ba8534536b7aaa8f4b2062d1ba84c27d#a942f138ba8534536b7aaa8f4b2062d1ba84c27d" }
+version = "0.0.3"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "beautifulsoup4" },
     { name = "pyyaml" },
     { name = "tabulate" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1b/91/1689b14153f92e46c5a7e68a5a6ac8c832f6fbe312117a2847a5f07352fe/tracecite-0.0.3.tar.gz", hash = "sha256:c83ccee408d66b5fb1be9c8bf06cb92bd508c80621990cf8e467fa3cb7e228f4", size = 152429, upload-time = "2026-11-05T12:02:03.995Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1a/ec/73f63aaa516fb994cacc8135245149ac7d018199bdf77d3f99db5bb91eee/tracecite-0.0.3-py3-none-any.whl", hash = "sha256:f4728510d7cbc5c5c3f385fb2cbd232f7fc0797919bc930061f27b57d7bea95b", size = 168043, upload-time = "2026-11-05T12:02:02.605Z" },
 ]
 
 [package.optional-dependencies]
@@ -2438,8 +2442,8 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'test'", specifier = ">=8.4,<9" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "tabulate", specifier = ">=0.9" },
-    { name = "tracecite", git = "https://github.com/yasirroni/tracecite.git?rev=a942f138ba8534536b7aaa8f4b2062d1ba84c27d" },
-    { name = "tracecite", extras = ["evidence"], marker = "extra == 'evidence'", git = "https://github.com/yasirroni/tracecite.git?rev=a942f138ba8534536b7aaa8f4b2062d1ba84c27d" },
+    { name = "tracecite", specifier = ">=0.0.3" },
+    { name = "tracecite", extras = ["evidence"], marker = "extra == 'evidence'", specifier = ">=0.0.3" },
     { name = "tracecite-docs", extras = ["pandas"], marker = "extra == 'docs'" },
     { name = "tracecite-docs", extras = ["pandas"], marker = "extra == 'test'" },
 ]

@@ -21,7 +21,7 @@ classifiers = [
   "Topic :: Text Processing :: Indexing",
 ]
 dependencies = [
-  "tracecite>=0.0.2",
+  "tracecite>=0.0.3",
   "beautifulsoup4>=4.12",
   "PyYAML>=6.0",
   "tabulate>=0.9",
@@ -33,7 +33,7 @@ Documentation = "https://yasirroni.github.io/tracecite/"
 [project.optional-dependencies]
 # Quarto runs Python documentation pages through a Jupyter kernel.
 docs = ["ipykernel>=7.3", "nbclient>=0.11", "nbformat>=5.10", "tracecite-docs[pandas]"]
-evidence = ["tracecite[evidence]>=0.0.2"]
+evidence = ["tracecite[evidence]>=0.0.3"]
 # knowledge_table and computed_first_row_summary take a pandas DataFrame.
 pandas = ["pandas>=2.0"]
 test = ["build>=1.2", "pytest>=8.4,<9", "tracecite-docs[pandas]"]
@@ -50,8 +50,3 @@ include = ["src", "tests"]
 pythonVersion = "3.11"
 venvPath = "."
 venv = ".venv"
-
-[tool.uv.sources]
-# Development pin: the published core lacks the indexing APIs at this revision.
-# Replace this pin and verify the core requirement before publishing.
-tracecite = { git = "https://github.com/yasirroni/tracecite.git", rev = "a942f138ba8534536b7aaa8f4b2062d1ba84c27d" }
