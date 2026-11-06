@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tracecite-docs"
 version = "0.0.1"
-description = "Source-linked table normalisation and evidence retrieval for executable documentation"
+description = "Quarto builds and source-linked table normalisation for executable Python and Julia pages"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
@@ -28,7 +28,9 @@ dependencies = [
 ]
 
 [project.urls]
+Homepage = "https://github.com/yasirroni/tracecite-docs"
 Documentation = "https://yasirroni.github.io/tracecite/"
+Issues = "https://github.com/yasirroni/tracecite-docs/issues"
 
 [project.optional-dependencies]
 # Quarto runs Python documentation pages through a Jupyter kernel.
