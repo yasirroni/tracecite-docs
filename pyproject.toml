@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tracecite-docs"
-version = "0.0.1"
+version = "0.0.2"
 description = "Quarto builds and source-linked table normalisation for executable Python and Julia pages"
 readme = "README.md"
 requires-python = ">=3.11"
