@@ -3,14 +3,12 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-import tracecite.evidence.verify as verify_module
-from tracecite.evidence.source_links import (
-    parse_source_link_destination,
-    parse_staged_source_destination,
-)
-from tracecite.evidence.verify import _parse_definitions
 
 from tracecite_docs.docs import load_docs_contract, stage_docs
+from tracecite_docs.docs.stage import (
+    parse_staged_markdown_destination,
+    parse_staged_source_destination,
+)
 
 
 def _fixture(tmp_path: Path) -> tuple[Path, Path, str]:
@@ -79,36 +77,58 @@ publication_exclude = []
     return config, retained / "index.md", source
 
 
-def test_verifier_and_stager_share_destination_parser_contract() -> None:
-    destination = "<sources/report\\ file.pdf#page=7>"
-    assert parse_source_link_destination(destination) == ("sources/report file.pdf", 7)
-    definitions, issues, _ = _parse_definitions([f"[report]: {destination}"])
-    assert issues == []
-    assert definitions["report"].path == "sources/report file.pdf"
-    assert definitions["report"].page == 7
+def test_parse_staged_source_destination_pdf_positive_page() -> None:
     assert parse_staged_source_destination("sources/report.pdf#page=7") == (
         "sources/report.pdf",
         7,
     )
     assert parse_staged_source_destination("sources/report.pdf#page=0") is None
+    assert parse_staged_source_destination("sources/report.pdf#page=-1") is None
+    assert parse_staged_source_destination("sources/report.md#page=7") is None
 
 
-def test_verifier_delegates_definition_parsing_at_runtime(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    calls: list[str] = []
+def test_parse_staged_markdown_destination_without_anchor() -> None:
+    assert parse_staged_markdown_destination("relative.md") == ("relative.md", "")
+    assert parse_staged_markdown_destination("../guide/searchable-evidence.md") == (
+        "../guide/searchable-evidence.md",
+        "",
+    )
 
-    def delegated(destination: str) -> tuple[str, int]:
-        calls.append(destination)
-        return "delegated.pdf", 42
 
-    monkeypatch.setattr(verify_module, "parse_source_link_destination", delegated)
-    definitions, issues, _ = _parse_definitions(["[report]: original.pdf#page=7"])
+def test_parse_staged_markdown_destination_with_anchor() -> None:
+    assert parse_staged_markdown_destination("relative.md#overview") == (
+        "relative.md",
+        "overview",
+    )
+    assert parse_staged_markdown_destination("nested/page.md#section-2") == (
+        "nested/page.md",
+        "section-2",
+    )
 
-    assert calls == ["original.pdf#page=7"]
-    assert issues == []
-    assert definitions["report"].path == "delegated.pdf"
-    assert definitions["report"].page == 42
+
+def test_parse_staged_markdown_destination_rejects_malformed_candidates() -> None:
+    # Query-bearing.
+    assert parse_staged_markdown_destination("relative.md?download=1") is None
+    assert parse_staged_markdown_destination("relative.md?download=1#overview") is None
+    # Remote.
+    assert (
+        parse_staged_markdown_destination("https://example.invalid/relative.md") is None
+    )
+    # Angle-wrapped (escaping form), unsupported for narrow Markdown routing.
+    assert parse_staged_markdown_destination("<relative.md>") is None
+    # Multiple fragments or an empty fragment.
+    assert parse_staged_markdown_destination("relative.md#one#two") is None
+    assert parse_staged_markdown_destination("relative.md#") is None
+    # Wrong extension (including a coincidental ".md" substring).
+    assert parse_staged_markdown_destination("relative.mdx") is None
+    assert parse_staged_markdown_destination("relative.md5") is None
+    assert parse_staged_markdown_destination("relative.pdf") is None
+    # Whitespace or forbidden characters in the path or anchor.
+    assert parse_staged_markdown_destination("relative with space.md") is None
+    assert parse_staged_markdown_destination("relative.md#with space") is None
+    assert parse_staged_markdown_destination("relative.md#(parens)") is None
+    # Empty destination.
+    assert parse_staged_markdown_destination("") is None
 
 
 def test_stage_local_and_public_rewrite_only_targeted_links(tmp_path: Path) -> None:
