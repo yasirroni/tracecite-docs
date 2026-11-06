@@ -13,8 +13,7 @@ from typing import Literal
 from tracecite.evidence.source_links import (
     SourceLinkEntry,
     load_source_links,
-    parse_staged_markdown_destination,
-    parse_staged_source_destination,
+    parse_source_link_destination,
 )
 
 from .contract import DocsEvidenceContract
@@ -84,6 +83,56 @@ _HTML_BLOCK_TAGS = {
     "ul",
 }
 _TABLE_SEPARATOR = re.compile(r"^\s*\|?\s*:?-{3,}:?\s*(?:\|\s*:?-{3,}:?\s*)+\|?\s*$")
+
+
+def parse_staged_source_destination(destination: str) -> tuple[str, int] | None:
+    """Parse a narrow local PDF `#page=N` destination for stage rewriting."""
+    parsed = parse_source_link_destination(destination)
+    if parsed is None:
+        return None
+    path, page = parsed
+    if (
+        page <= 0
+        or any(character in path for character in "?#()<>\t\r\n")
+        or any(character.isspace() for character in path)
+        or not path.lower().endswith(".pdf")
+    ):
+        return None
+    return path, page
+
+
+def parse_staged_markdown_destination(destination: str) -> tuple[str, str] | None:
+    """Parse a narrow local `.md` or `.md#anchor` destination for stage rewriting.
+
+    Returns ``(path, anchor)`` with ``anchor`` the empty string when no
+    fragment was authored, or ``None`` when the destination is not a
+    supported local Markdown routing candidate (remote, query-bearing,
+    angle-wrapped, malformed, or wrong-extension destinations all return
+    ``None`` so the caller can leave them untouched rather than erroring).
+    """
+    if (
+        not destination
+        or "?" in destination
+        or "://" in destination
+        or destination.startswith("<")
+        or destination.count("#") > 1
+    ):
+        return None
+    path, separator, anchor = destination.partition("#")
+    if separator and not anchor:
+        return None
+    if (
+        not path
+        or any(character in path for character in "?#()<>\t\r\n")
+        or any(character.isspace() for character in path)
+        or not path.lower().endswith(".md")
+    ):
+        return None
+    if any(character.isspace() for character in anchor) or any(
+        character in anchor for character in "()<>"
+    ):
+        return None
+    return path, anchor
 
 
 def _protected_ranges(

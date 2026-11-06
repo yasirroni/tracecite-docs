@@ -2413,21 +2413,17 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
-docs = [
+evidence = [
+    { name = "tracecite", extra = ["evidence"] },
+]
+python = [
     { name = "ipykernel" },
     { name = "nbclient" },
     { name = "nbformat" },
     { name = "pandas" },
 ]
-evidence = [
-    { name = "tracecite", extra = ["evidence"] },
-]
-pandas = [
-    { name = "pandas" },
-]
 test = [
     { name = "build" },
-    { name = "pandas" },
     { name = "pytest" },
 ]
 
@@ -2435,19 +2431,17 @@ test = [
 requires-dist = [
     { name = "beautifulsoup4", specifier = ">=4.12" },
     { name = "build", marker = "extra == 'test'", specifier = ">=1.2" },
-    { name = "ipykernel", marker = "extra == 'docs'", specifier = ">=7.3" },
-    { name = "nbclient", marker = "extra == 'docs'", specifier = ">=0.11" },
-    { name = "nbformat", marker = "extra == 'docs'", specifier = ">=5.10" },
-    { name = "pandas", marker = "extra == 'pandas'", specifier = ">=2.0" },
+    { name = "ipykernel", marker = "extra == 'python'", specifier = ">=7.3" },
+    { name = "nbclient", marker = "extra == 'python'", specifier = ">=0.11" },
+    { name = "nbformat", marker = "extra == 'python'", specifier = ">=5.10" },
+    { name = "pandas", marker = "extra == 'python'", specifier = ">=2.0" },
     { name = "pytest", marker = "extra == 'test'", specifier = ">=8.4,<9" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "tabulate", specifier = ">=0.9" },
     { name = "tracecite", specifier = ">=0.0.3" },
     { name = "tracecite", extras = ["evidence"], marker = "extra == 'evidence'", specifier = ">=0.0.3" },
-    { name = "tracecite-docs", extras = ["pandas"], marker = "extra == 'docs'" },
-    { name = "tracecite-docs", extras = ["pandas"], marker = "extra == 'test'" },
 ]
-provides-extras = ["docs", "evidence", "pandas", "test"]
+provides-extras = ["python", "evidence", "test"]
 
 [[package]]
 name = "traitlets"

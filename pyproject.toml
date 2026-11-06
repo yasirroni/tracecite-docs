@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tracecite-docs"
 version = "0.0.1"
-description = "Source-linked table normalisation and evidence retrieval for executable documentation"
+description = "Quarto builds and source-linked table normalisation for executable Python and Julia pages"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
@@ -28,15 +28,15 @@ dependencies = [
 ]
 
 [project.urls]
+Homepage = "https://github.com/yasirroni/tracecite-docs"
 Documentation = "https://yasirroni.github.io/tracecite/"
+Issues = "https://github.com/yasirroni/tracecite-docs/issues"
 
 [project.optional-dependencies]
 # Quarto runs Python documentation pages through a Jupyter kernel.
-docs = ["ipykernel>=7.3", "nbclient>=0.11", "nbformat>=5.10", "tracecite-docs[pandas]"]
+python = ["ipykernel>=7.3", "nbclient>=0.11", "nbformat>=5.10", "pandas>=2.0"]
 evidence = ["tracecite[evidence]>=0.0.3"]
-# knowledge_table and computed_first_row_summary take a pandas DataFrame.
-pandas = ["pandas>=2.0"]
-test = ["build>=1.2", "pytest>=8.4,<9", "tracecite-docs[pandas]"]
+test = ["build>=1.2", "pytest>=8.4,<9"]
 
 [project.scripts]
 tracecite-docs = "tracecite_docs.cli:main"
